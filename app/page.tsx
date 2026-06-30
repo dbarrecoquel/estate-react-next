@@ -19,6 +19,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     rooms: sp.rooms ? Number(sp.rooms) : undefined,
     adsType: sp.adsType ? Number(sp.adsType) : undefined,
     sortBy: (sp.sortBy as "price" | "rooms") ?? undefined,
+    direction: (sp.direction as "ASC" | "DESC") ?? undefined
   };
 
   return (

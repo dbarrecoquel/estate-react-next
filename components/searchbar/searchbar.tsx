@@ -7,6 +7,7 @@ import { useAds } from "@/context/ads.context";
 import { AdsSearchParams } from "@/models/ads/ads.model";
 import { useDebounce } from "@/hooks/use-debounce";
 import styles from "./searchbar.module.css";
+import { dir } from "console";
 
 interface SearchBarProps {
   initialParams: AdsSearchParams;
@@ -24,7 +25,7 @@ export default function SearchBar({ initialParams }: SearchBarProps) {
   const [minPrice, setMinPrice] = useState<number | "">(initialParams.minPrice ?? "");
   const [maxPrice, setMaxPrice] = useState<number | "">(initialParams.maxPrice ?? "");
   const [sortBy, setSortBy] = useState<"price" | "rooms" | "">(initialParams.sortBy ?? "");
-
+  const [direction, setDirection] = useState<"ASC" | "DESC" | "">(initialParams.direction ?? "");
   const debouncedSearch = useDebounce(search, 400);
   const debounceMinPrice = useDebounce(minPrice, 400);
   const debounceMaxPrice = useDebounce(maxPrice, 400);
@@ -52,6 +53,7 @@ export default function SearchBar({ initialParams }: SearchBarProps) {
       minPrice: minPrice !== "" ? minPrice : undefined,
       maxPrice: maxPrice !== "" ? maxPrice : undefined,
       sortBy: sortBy || undefined,
+      direction : direction || undefined, 
       ...overrides,
     };
 
@@ -62,10 +64,12 @@ export default function SearchBar({ initialParams }: SearchBarProps) {
     if (params.minPrice !== undefined) q.set("minPrice", String(params.minPrice));
     if (params.maxPrice !== undefined) q.set("maxPrice", String(params.maxPrice));
     if (params.sortBy) q.set("sortBy", params.sortBy);
+    if (params.direction) q.set("direction", params.direction);
+
     const qs = q.toString();
     router.replace(qs ? `/?${qs}` : "/", { scroll: false });
     loadAds(params);
-  }, [search, adsType, rooms, minPrice, maxPrice, sortBy, loadAds, router]);
+  }, [search, adsType, rooms, minPrice, maxPrice, sortBy,direction, loadAds, router]);
 
   useEffect(() => {
     if (isFirstSearch.current) { isFirstSearch.current = false; return; }
@@ -85,11 +89,12 @@ export default function SearchBar({ initialParams }: SearchBarProps) {
   const handleReset = () => {
     setSearch(""); setAdsType(""); setRooms("");
     setMinPrice(""); setMaxPrice(""); setSortBy("");
+    setDirection("");
     loadAds({ page: 0, size: 10 });
     router.replace("/", { scroll: false });
   };
 
-  const activeCount = [search, adsType, rooms, minPrice, maxPrice, sortBy].filter(
+  const activeCount = [search, adsType, rooms, minPrice, maxPrice, sortBy, direction].filter(
     (v) => v !== "" && v !== undefined
   ).length;
 
@@ -151,8 +156,22 @@ export default function SearchBar({ initialParams }: SearchBarProps) {
           <option value="price">Prix</option>
           <option value="rooms">Pièces</option>
         </select>
-      </div>
 
+         <select
+          className={styles.select}
+          value={direction}
+          onChange={(e) => {
+            const val = e.target.value as "ASC" | "DESC" | "";
+            setDirection(val);
+            triggerSearch({ direction: val || undefined });
+          }}
+        >
+          <option value="">Trier par</option>
+          <option value="ASC">Ordre croissant</option>
+          <option value="DESC">Ordre décroissant</option>
+        </select>
+      </div>
+          
       <div className={styles.priceRow}>
         <div className={styles.priceGroup}>
           <label className={styles.label}>Prix min (€)</label>

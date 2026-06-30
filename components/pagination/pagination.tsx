@@ -23,6 +23,7 @@ export default function Pagination() {
     if (newParams.minPrice !== undefined) q.set("minPrice", String(newParams.minPrice));
     if (newParams.maxPrice !== undefined) q.set("maxPrice", String(newParams.maxPrice));
     if (newParams.sortBy) q.set("sortBy", newParams.sortBy);
+    if (newParams.direction) q.set("direction", newParams.direction);
     router.push(`/?${q.toString()}`);
     loadAds(newParams);
     window.scrollTo({ top: 0, behavior: "smooth" });

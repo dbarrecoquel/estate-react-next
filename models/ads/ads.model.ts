@@ -32,4 +32,5 @@ export interface AdsSearchParams{
     rooms?: number;
     adsType?: number;
     sortBy?: "price" | "rooms";
+    direction?: "ASC" | "DESC";
 }

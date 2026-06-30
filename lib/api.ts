@@ -15,6 +15,7 @@ export async function fetchAds(params : AdsSearchParams = {}) : Promise<AdsPage>
     if (params.rooms !== undefined) query.set("rooms", String(params.rooms));
     if (params.adsType !== undefined) query.set("adsType", String(params.adsType));
     if (params.sortBy) query.set("sortBy", params.sortBy);
+    if (params.direction) query.set("direction",params.direction);
     
     const res = await fetch(`${API_BASE}/ads?${query.toString()}`, { cache: "no-store" });
     if (!res.ok) throw new Error("Erreur lors du chargement des annonces");
