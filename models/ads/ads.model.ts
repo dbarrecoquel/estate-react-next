@@ -1,4 +1,5 @@
 import { AdsType } from "./ads-type.model";
+import { Image } from "./image.model";
 
 export interface Ad {
     id : number;
@@ -10,6 +11,7 @@ export interface Ad {
     adsTypeDto : AdsType;
     createdAt : string;
     updatedAt : string;
+    images? : Image[];
 }
 
 export interface AdsPage{

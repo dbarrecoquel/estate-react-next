@@ -9,7 +9,7 @@ interface AdsListItemProps {
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(price);
 }
-
+const API_BASE = "http://localhost:8082";
 const TYPE_COLORS: Record<string, string> = {
   Appartement: "#3B82F6",
   Maison: "#10B981",
@@ -18,6 +18,8 @@ const TYPE_COLORS: Record<string, string> = {
 
 export default function AdsListItem({ ad }: AdsListItemProps) {
   const typeColor = TYPE_COLORS[ad.adsTypeDto.name] ?? "#64748B";
+  const mainImage = ad.images && ad.images.length > 0 ? ad.images[0] : null;
+ 
 
   return (
     <Link href={`/ads/${ad.id}`} className={styles.card}>
@@ -25,7 +27,17 @@ export default function AdsListItem({ ad }: AdsListItemProps) {
         <span className={styles.typeBadge} style={{ backgroundColor: typeColor }}>
           {ad.adsTypeDto.name}
         </span>
-        <div className={styles.imageIcon}>🏠</div>
+                {mainImage ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`${API_BASE}${mainImage.url}`}
+            alt={mainImage.alt ?? ad.name}
+            className={styles.image}
+          />
+        ) : (
+          <div className={styles.imageIcon}>🏠</div>
+        )}
+
       </div>
       <div className={styles.body}>
         <h3 className={styles.title}>{ad.name}</h3>

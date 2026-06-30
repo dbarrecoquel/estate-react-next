@@ -4,6 +4,7 @@ import { use, useEffect } from "react";
 import Link from "next/link";
 import { useAdDetail } from "@/context/ads-detail.context";
 import styles from "./page.module.css";
+import ImageCarousel from "@/components/images/image.carousel";
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(price);
@@ -58,7 +59,7 @@ export default function AdDetailPage({ params }: { params: Promise<{ id: string 
           <span className={styles.typeBadge} style={{ backgroundColor: typeColor }}>
             {ad.adsTypeDto.name}
           </span>
-          <div className={styles.bannerIcon}>🏠</div>
+           <ImageCarousel images={ad.images ?? []} alt={ad.name} />
         </div>
 
         <div className={styles.content}>

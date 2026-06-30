@@ -29,22 +29,13 @@
 
 .imageBanner {
   position: relative;
-  height: 280px;
-  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.bannerIcon {
-  font-size: 6rem;
-  opacity: 0.3;
 }
 
 .typeBadge {
   position: absolute;
   top: 20px;
   left: 20px;
+  z-index: 10;
   color: #fff;
   font-size: 0.75rem;
   font-weight: 700;
